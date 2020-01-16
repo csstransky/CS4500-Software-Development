@@ -92,6 +92,16 @@ std::cout << "AALDLDLD: " << Size << '\n';
 return Size;
 }
 
+void add_to_word_list(size_t print_length, StrList* word_list, String* string) {
+    // We will either use the string for the word list, or delete it
+    if (string->size() >= print_length) {
+        word_list->push_back(string);
+    }
+    else {
+        delete string;
+    }
+}
+
 void print_file(size_t print_length, char* file_name, StrList* word_list) {
     // TODO: Come back and correctly allocate this array based on the size of the file
     // For now, this is fine, especially since I actually shouldn't have done this much lol
@@ -104,17 +114,20 @@ void print_file(size_t print_length, char* file_name, StrList* word_list) {
     if (in_file.is_open()) {
         while(!in_file.eof()) {
             in_file >> file_line_string;
-            char* temp_string = 
+            String* temp_string = new String();
             for(size_t ii = 0; ii < strlen(file_line_string); ii++) {
-              
+                if (isalpha(file_line_string[ii])) {
+                    temp_string->concat_char(file_line_string[ii]);
+                } 
+                else if (temp_string->size() > 0) {
+                    add_to_word_list(print_length, word_list, temp_string);
+                    temp_string = new String();
+                }
             }
-            if (strlen(file_line_string) >= print_length) {
-              word_list->push_back(new String(file_line_string));
-            }
-            std::cout << file_line_string << '\n'; // TODO get rid of 
+            add_to_word_list(print_length, word_list, temp_string);
         }
         in_file.close();
-
+        
         word_list->print();//TODO get rid of 
         word_list->print_occurences();
     }

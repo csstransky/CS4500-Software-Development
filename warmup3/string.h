@@ -65,6 +65,22 @@ public:
         strcat(temp_string, s->val_);
         return new String(temp_string);
     }
+    
+    void concat_char(char c) {
+        char* temp_string = new char[size_ + 1];
+        for (size_t ii = 0; ii < size_; ii++) {
+            temp_string[ii] = val_[ii];
+        }
+        temp_string[size_] = c;
+        temp_string[size_ + 1] = '\0';
+        delete[] val_;
+        val_ = temp_string;
+        size_++;
+    }
+
+    size_t size() {
+        return size_;
+    }
 
     void print() {
         Cout * c = new Cout();
