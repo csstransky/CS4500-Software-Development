@@ -1,0 +1,41 @@
+char* <- this is an array of characters
+
+"hello" <- this is type of "const char*"
+
+
+C++ and CwC both allow for method overloading, like the example below:
+void p(char* s) { std::cout << s ; }
+void p(const char* s) { std::cout << s ; }
+
+
+char* s  vs  char *s
+char * v <- happy, v is char*
+char * u, v; <- u is a char*, v is a char
+char* u, v; <- u is a char*, v is a char*
+
+
+"virtual" lets you write subclasses 
+virtual bool equals(Object* other) {                                          
+	return this == other;                                                       
+}                                                                             
+      
+
+"this" in C++ is the value of the pointer
+
+
+Java:
+(T)v <- Checks during runtime to see if variable if of type T or 1 of its subclasses
+
+reinterpret_cast<T>(e) <- doesn't matter what the types are, will do it
+
+static_cast <- only if the transformation is safe, checks at compiler
+
+dynamic_cast <- only will cast during runtime if the cast is safe, can cause errors during runtime
+
+
+#pragma once <- if you see this in multiple places, it will import only once
+
+
+char* val_   <-|
+size_t size_ <--- convention that shows that the method or variable is private
+

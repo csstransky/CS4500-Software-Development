@@ -1,0 +1,41 @@
+When you have classes that depend on each other, things can get ugly.
+That means when a class inherits to another creating a circulic graph, problems arise.
+
+How many people in a code review:
+IBM: says 3
++ Head Reader - Decides where we should look at the code, asks key questions, moderates discussion
++ Assisstant Reader - Second pair of eyes that can provide some insight
++ Secretary - Secretary records everything that was said
+
++ Makes sense to use specialists (graphic guy won't do DB stuff)
++ You don't need to read the code beforehand, either works fine
++ Secretary now can make Github issues 
++ Code reviews work best while in person, text across the internet can cause issues
++ Presentor vs panel : this is meant to be confrontational, need to be respectful and polite
+
+Our class will do this:
+2 presentors vs class
+
+How much should the presentor speak vs the audience
+- Code should be explained at a minimum
+
++ Both sides will be graded: presentors & panel
+
+Bus Factor: How many people need to be run over until the project dies?
+
+BOTH PEOPLE IN THE PAIR NEED TO KNOW ALL LINES OF CODE
+
+assert(false) is used to make sure that no one will use the code (use for virtual stuff)
+
++ Classes start with a capital letter
++ Use underscore for variables
++ Use underscore after a variable to determine that the variable is private
++ Use this for StackOverflow stuff: "Obtained from <LINK> on <DATE>"
++ The length and complexity of a name should be determined by the life of the variable
+    ex. "ii" for for loops, "thing" for variables, "BIG_LONG_THING" for globals
++ Use assert(argc > 0 && argv); when you want to make sure your variable is used correctly
+
++ Virtual methods take more time and space to run as it has more overhead
+
++ "&" can NEVER be a nullptr, it will always grab from an address
++ "." is the same as & for classes

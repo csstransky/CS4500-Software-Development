@@ -1,0 +1,238 @@
+** Memory ** 
+
+Everyone computer has a bunch of registers (near 100) that deals
+with machine code.
+-CPU -> RAM -> HD -> I/O
+
+Each programming langauge offers a different abstraction of memory.
+
+The goal is to make programming easier and improve the portability 
+of code by hiding irrelevant hardware oddities.
+
+Each language offers a memory API - a set of operations for 
+manopulating memory.
+
++ Being able to create arraries and pick their index
++ Making an object with a constructor
+
+
+C++
+=====
+C++ offers a story both simpler and more complex than Java.
+Memory is a sequence of bytes, read/written from an address.
+Addresses are values manipulated using arithmetic operations.
+Memory can be allocated:
++ Statically
++ Dynamically on the stack
++ Dynamically on the heap
+
+Types give the compiler a hint how to interpret a memory address
+- Data on a stack will live until the function is alive
+- Data on the heap will likely stay forever
+
+Stages of Compliation
+- Preprocessor
+- Front-end
+- Back end - find syntax, generate code for program
+- Optimizer
+- Assembler
+- Linker - grabs multiple files to make an executable
+
+Stack
+|
+v
+
+^
+|
+Heap
+Data
+Code
+
+Stack: keeps track of the point to which each active subroutine should return control when it finishes executing; stores variables that are local to functions
+Heap: Dynamic memory for variables that are created with new and disposed of with delete
+Data: initialized data
+Code: ???
+
+Stack frame
+
+--
+Parameters
+--
+- Return Address
+- Stack Frame Pointer
+--
+Local Variables
+--
+
+#include <stdio.h>
+// Static allocation with the keyword "static"
+static int sx;
+static int sa[100];
+static int sy;
+
+// Stack allocation automatic by the compiler for local variables
+int main() {
+    int lx;
+    static int sz;
+}
+
+// "printf" can display the address of any identifier
+printf("%p\n", &sx); // 0x100001084
+printf("%p\n", &sa); // 0x1000010a0
+printf("%p\n", &sy); // 0x100001230
+printf("%p\n", &lx); // 0x7fff5fbff58c
+printf("%p\n", &sz); // 0x100001080
+printf("%p\n", &main);//0x1000000dfc
+
+Words
+- Refers to the size of the pointer that holds integers and addresses
+- Can be 16 bits, or 4 GB
+
+Address
+- Specifies the byte location in compuer memory
+- sizeof(char) <- shows the number of bytes it's storing (1 byte)
+- sizeof(char*) <- can be whatever size
+
+Data Types
++ int, float, double, char, void
+Composite types are
+- arrays to other types
+- classes
+
+Modifiers
+Type Qualifiers
+- short - decrease storage size
+- long - increase sotrage size
+- signed
+- unsigned
+
+Type Modifiers
+- const - value not expected to change
+
+Storage Class
+- static - variable that is global to the program
+- extern varible that is declared in another file
+
+
+Character representation
+ASCII code: defines 128 character codes (from 0 to 127)
+A = 65
+a = 97
+b = 98
+
+Strings
+"Hello" <- string literal that is given read-only memory (can't be modified)
+"Hello" = [H,e,l,l,o,\0]
+const char* c = "Hello";
+char c[6] = "Hello";
+
+char* c = strdup("Hello")
+// This now needs to be freed
+
+
+Declarations
+int lower = 3, upper = 5;
+char c = '\\', line[10], he[3] = "he";
+float eps = 1.0e-5;
+char arrdarr[10][10];
+unsigned int x = 42U;
+char* ardar[10];
+char* a;
+void* v;
+
+Conversions
+char c; int i; 
+i + c;
+The value with the smaller range is converted to the value with a larger range.
+char in this case will be increased to the size of an int
+
+signed to unsigned conversion:
+Ordering Inversion
+Negative -> Big Positive
+int x = -1
+size_t y = 2
+x + y;
+
+
+Casts
+static_cast<T>(x) - will always succeed
+dynamic_cast<T*>(x) - only works with pointers, check that T is a subclass of x
+reinterpret_cast<T>(x) - take anything and turn it into anything else (DANGEROUS)
+const_cast<T>(x) - forget that the variable was const
+(T)x <- BAD, DO NOT DO ex. (char*)text
+
+size_t x;
+char c = reinterpret_cast<char>(x); // NOT POSSIBLE, conversion not allowed
+
+
+Parameter Passing
+- Copy of param on function entry
+int y = 20, x = 10;
+swap(x,y);
+
+void swap(int a, int b) {
+    int t = a;
+    a = b;
+    b = t;
+} // This will not work because you're only swapping a copy
+
+// Can create x and y on the heap with int*
+int* y = new int(20), new int(10);
+
+// But this is nicer
+int y = 20, x = 10;
+swap(x,y);
+
+void swap(int& a, int& b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+char c;
+char* pc;
+char** ppc;
+c = 'a'; // initialize a character variable
+pc = &c; // get the address of a variable
+ppc = &pc; // get the address of variable 
+
+c == *pc == **ppc;
+
+* pointer CAN be null (nullptr)
+& address can NEVER be null
+
+
+Memory Allocation Problems
+String *p = new String*[sz];
+// The buffer needs to double
+String *newp = new String*[sz*2];
+for (int i=0;i<sz;i++) { ??? }
+
+int *ptr = new int;
+delete ptr;
+*ptr = 7; // undefined behavior
+
+Memory overrun
+- Write in memory that was not allocated
+- The pgoram will exit with segmentation fault
+- Overwrite memory; unexpected behavior
+
+Fragmentation
+- The system may have enough memory, but not in a contiguous region
+int* vals[10000];
+int i;
+for(i = 0; i< 10000; i++) {
+    vals[i] = new int*;
+}
+for (i = 0; i < 10000; i = i + 2)
+    delete vals[i];
+
+
+0 = stdin
+1 = stdout
+2 = stderr
+
+There are a maximum amount of files you can open at once.
+Closing a file tells the OS you're done.
+
+f = fopen("log", "r");
