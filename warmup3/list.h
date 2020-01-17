@@ -189,18 +189,6 @@ public:
         return sizeof(s)/sizeof(s[0]);
     }
 
-    // size_t occurences(const char* word) {
-    //     String* string_word = new String(word);
-    //     size_t occurences = 0;
-    //     for (size_t ii = 0; ii < size_; ii++) {
-    //         if (list_[ii]->equals(string_word)) {
-    //             occurences++;
-    //         }
-    //     }
-    //     delete string_word;
-    //     return occurences;
-    // }
-
     size_t occurences(String* string) {
         size_t occurences = 0;
         for (size_t ii = 0; ii < size_; ii++) {
@@ -221,15 +209,17 @@ public:
         delete c;
     }
     
-
     void print_occurences() {
         Cout* c = new Cout();
         StrList* temp_list = new StrList();
         temp_list->add_all(0, this);
-        c->pln("------====-----");
         while(temp_list->size_ > 0) {
             size_t top_occurence = 0;
             String* top_string = nullptr;
+            // I really, REALLY wish I could use a hashmap here, but like the assignment wants,
+            // I decided to strictly use lists. It's O(n^2) now, but with a map I could get O(n).
+            
+            // I first find the top occurence
             for (size_t ii = 0; ii < temp_list->size(); ii++) {
                 size_t string_occurences = occurences(temp_list->get(ii));
                 if (string_occurences > top_occurence) {
@@ -237,19 +227,18 @@ public:
                     top_string = temp_list->get(ii);
                 }
             }
+            // Print it
             c->p(top_string->val_)->p(" ")->pln(top_occurence);
+            // Then I remove all occurences of that word from the list so it won't show up next time
             while(top_occurence > 0) {
                 size_t string_index = temp_list->index_of(top_string);
                 temp_list->remove(string_index);
                 top_occurence--;
             }
         }
-        c->pln("------====-----");
         delete c;
         delete temp_list;
     }
-
-    
 };
 
 class SortedStrList : public StrList {

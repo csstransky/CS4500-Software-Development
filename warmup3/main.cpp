@@ -1,17 +1,16 @@
-#include "helper.h"  // Your file, with any C++ code that you need
-#include "object.h"  // Your file with the CwC declaration of Object
-#include "string.h"  // Your file with the String class
-#include "list.h"    // Your file with the two list classes
  /*
 Cristian Stransky  
 CS4500 - Software Dev
 Spring 2020
  */
 
-#include <iostream>
-#include <string.h>
 #include <fstream>
+#include "helper.h"  // Your file, with any C++ code that you need
+#include "object.h"  // Your file with the CwC declaration of Object
+#include "string.h"  // Your file with the String class
+#include "list.h"    // Your file with the two list classes
 
+// The assignment wants the default behavior to grab only words of length greater than 4, so 5 it is
 size_t DEFAULT_PRINT_LENGTH = 5;
 
 void p(char s) { std::cout << s ; }
@@ -30,69 +29,16 @@ bool is_same_string(const char* string1, const char* string2) {
     return strcmp(string1, string2) == 0;
 }
 
-char* get_concat_string(char* base_string, char* added_string) {
-    char* temp_string = new char[1 + strlen(base_string) + strlen(added_string)];
-    strcpy(temp_string, base_string);
-    strcat(temp_string, added_string);
-    return temp_string;
+size_t file_size(char* path) {
+    FILE* file = fopen(path, "rb");
+    fseek(file, 0L, SEEK_END); // goes to the end of the file
+    size_t file_size = ftell(file); // gets the size
+    fclose(file); 
+    return file_size;
 }
 
-char* get_concat_string(char* base_string, const char* added_string) {
-    char* temp_string = new char[1 + strlen(base_string) + strlen(added_string)];
-    strcpy(temp_string, base_string);
-    strcat(temp_string, added_string);
-    return temp_string;
-}
-
-// This method is mainly unused, but I wanted to make to make it to understand 
-// how to properly make a void function
-void concat(char*& base_string, char* added_string) {
-    char* temp_string = new char[1 + strlen(base_string) + strlen(added_string)];
-    strcpy(temp_string, base_string);
-    strcat(temp_string, added_string);
-    base_string = temp_string;
-}
-
-char* get_concat_printable_string(char* printable_string, char* added_string) {
-    if (!is_same_string(printable_string, "")) {
-        printable_string = get_concat_string(printable_string, " ");
-    }
-    return get_concat_string(printable_string, added_string);
-}
-
-void print_output_string(size_t print_length, char* output_string) {
-    // I do this to avoid array out of bounds errors
-    if (print_length < 0 || print_length > strlen(output_string)) { 
-        print_length = strlen(output_string); 
-    } 
-    for(size_t ii = 0; ii < print_length; ii++) {
-        p(output_string[ii]);
-    }
-    pln();
-}
-
-int Get_Size( char* path )
-{
-// #include <fstream>
-FILE *pFile = fopen(path, "rb");
-
-// set the file pointer to end of file
-fseek( pFile, 0L, SEEK_END );
-
-// get the file size
-int Size = ftell( pFile );
-
-// return the file pointer to begin of file if you want to read it
-// rewind( pFile );
-
-// close stream and release buffer
-fclose( pFile );
-std::cout << "AALDLDLD: " << Size << '\n';
-
-return Size;
-}
-
-void add_to_word_list(size_t print_length, StrList* word_list, String* string) {
+void add_string_to_word_list(size_t print_length, StrList* word_list, String* string) {
+    // NOTE: This is mainly used as a helper function
     // We will either use the string for the word list, or delete it
     if (string->size() >= print_length) {
         word_list->push_back(string);
@@ -102,62 +48,43 @@ void add_to_word_list(size_t print_length, StrList* word_list, String* string) {
     }
 }
 
-void print_file(size_t print_length, char* file_name, StrList* word_list) {
-    // TODO: Come back and correctly allocate this array based on the size of the file
-    // For now, this is fine, especially since I actually shouldn't have done this much lol
-    char* file_line_string = new char[100];
-    std::ifstream in_file;
-
-    in_file.open(file_name);
-    Get_Size(file_name); //TODO use this for laterk
-
-    if (in_file.is_open()) {
-        while(!in_file.eof()) {
-            in_file >> file_line_string;
-            String* temp_string = new String();
-            for(size_t ii = 0; ii < strlen(file_line_string); ii++) {
-                if (isalpha(file_line_string[ii])) {
-                    temp_string->concat_char(file_line_string[ii]);
-                } 
-                else if (temp_string->size() > 0) {
-                    add_to_word_list(print_length, word_list, temp_string);
-                    temp_string = new String();
-                }
-            }
-            add_to_word_list(print_length, word_list, temp_string);
+void add_file_line_to_word_list(size_t print_length, StrList* word_list, char* file_line_string) {
+    // NOTE: This is mainly used as a helper function
+    String* temp_string = new String();
+    for(size_t ii = 0; ii < strlen(file_line_string); ii++) {
+        if (isalpha(file_line_string[ii])) {
+            char lower_case_file_char = tolower(file_line_string[ii]);
+            temp_string->concat_char(lower_case_file_char);
+        } 
+        // It's possible to get an output with words seperated by symbols, so this 'if' will
+        // correctly seperate them, ex. "'tis!--whose": We want that to be "tis", "whose".
+        else if (temp_string->size() > 0) {
+            add_string_to_word_list(print_length, word_list, temp_string);
+            temp_string = new String();
         }
-        in_file.close();
-        
-        word_list->print();//TODO get rid of 
-        word_list->print_occurences();
     }
-    else {
-        pln("~ERROR: FILE NOT FOUND~");
-    }
+    add_string_to_word_list(print_length, word_list, temp_string);
 }
 
-void print(size_t ms, char* s, char* c) {
-    // Sorry, but I really need these or I'm going to go crazy
-    size_t print_length = ms;
-    char* file_name = s;
-    char* printable_string = c;
-
-    pln("=====================================");
-    if (print_length < SIZE_MAX) { std::cout << "print_length: " << print_length << '\n'; }
-    if (file_name) { std::cout << "file_name: \"" << file_name << "\"\n"; }
-    std::cout << "printable_string: \"" << printable_string << "\"\n";
-    pln("=====================================");
-
-    // TODO: Use the code below for when we want to actually print out the arguments
-    // NOTE: Warmup 1 does NOT execute the command, it simply prints the arguments of it
+void print_file(size_t print_length, char* file_name, StrList* word_list) {
+    // We will only print from a file if the user actually specifies a file with the "-f" flag.
     if (file_name) {
-        std::cout << "Printing output from file \"" << file_name << "\":\n";
-        print_file(print_length, file_name, new StrList());
-    }
-    if (!is_same_string(printable_string, "")) {
-        pln("Printing output:");
-        print_output_string(print_length, printable_string);
-    }
+        std::ifstream in_file;
+        in_file.open(file_name);
+        if (in_file.is_open()) {
+            // Worst case scenario, our buffer needs to hold the entire size of the file
+            char* file_line_string = new char[file_size(file_name)];
+            while(!in_file.eof()) {
+                in_file >> file_line_string; // buffer magic assigns file_line_string to next file line
+                add_file_line_to_word_list(print_length, word_list, file_line_string);
+            }
+            in_file.close(); 
+        }
+        else {
+            pln("~ERROR: FILE NOT FOUND~");
+        }
+    } 
+    word_list->print_occurences();
 }
 
 bool is_valid_flag(const char* flag, int argh, char** argv, size_t ii, char* flag_string) {
@@ -169,17 +96,28 @@ bool is_valid_flag(const char* flag, int argh, char** argv, size_t ii, size_t fl
 }
 
 size_t get_print_length(const char* next_arg) {
-    // A negative number will make print_length a ridiculous number, so I just make it 0 instead.
-    // Example: "-i -1" --> print_length = 18446744073709551615
+    // Since checks for print_length rely that they're greater than 0 (we need to read at least
+    // 1 character in a word), anything input that's 0 or below will be set to 1 to avoid seg faults
     char first_letter_of_next_arg = next_arg[0];
-    if (first_letter_of_next_arg == '-') {
-        next_arg = "0";
+    if (first_letter_of_next_arg == '-' || is_same_string(next_arg, "0")) {
+        next_arg = "1";
     }
     return atoi(next_arg);
 }
 
+void remove_print_length_strings(size_t print_length, StrList* word_list) {
+    for(size_t ii = 0; ii < word_list->size(); ii++) {
+        if(word_list->get(ii)->size_ < print_length) {
+            String* removed_string = word_list->remove(ii);
+            delete removed_string;
+            // I decrement ii to keep the index with the new array after having an element removed 
+            // This mainly stops "skips" from happening. I could go reverse as well.
+            ii--;
+        }
+    }
+}
+
 int main(int argh, char** argv) {
-    // The assignment wants the default behavior to grab only words of length greater than 4
     size_t print_length = DEFAULT_PRINT_LENGTH; 
     char* file_name = nullptr;
     StrList* word_list = new StrList();
@@ -197,11 +135,15 @@ int main(int argh, char** argv) {
             ii++;
         } 
         else {
-            // TODO stuff here later
-            // char* temp_string = get_concat_printable_string(printable_string, argv[ii]);
-            // printable_string = temp_string;
+            // I decided to include any other input into the command as a word to be evaluated,
+            // ex "./a.out -i 5 what the ducky" will output "ducky 1"
+            word_list->push_back(new String(argv[ii]));
         }
     }
-    // print(print_length, file_name, printable_string);
+    // Now that we have the print_length for certain, we have to go and remove anything that isn't long enough
+    // This is mainly for stuff like "./a.out -f doc.txt here is some texty", which should only include "texty"
+    if (word_list->size() > 0) {
+        remove_print_length_strings(print_length, word_list);
+    }
     print_file(print_length, file_name, word_list);
 }
