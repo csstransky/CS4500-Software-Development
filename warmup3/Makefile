@@ -19,7 +19,7 @@ test:
 	./a.out here her e her her -f doc.txt lol
 	./a.out -f doc.txt
 	# Entire Alice in Wonderland book test
-	./a.out -f alice29.txt 
+	# ./a.out -f alice29.txt 
 
 docker:
 	g++ -Wall -std=c++11 main.cpp

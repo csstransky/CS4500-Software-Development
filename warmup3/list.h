@@ -217,8 +217,12 @@ public:
             size_t top_occurence = 0;
             String* top_string = nullptr;
             // I really, REALLY wish I could use a hashmap here, but like the assignment wants,
-            // I decided to strictly use lists. It's O(n^2) now, but with a map I could get O(n).
-            
+            // I decided to strictly use lists. It's O(n^3) now, but with a map I could get O(n).
+
+            // Maybe I could've also created a subclass of SortedStrList to correctly sort the words
+            // in order of occurence (instead of alphabetical), but I relented as I thought that 
+            // would change the W2 class requirements, which I can't for this assignment.
+        
             // I first find the top occurence
             for (size_t ii = 0; ii < temp_list->size(); ii++) {
                 size_t string_occurences = occurences(temp_list->get(ii));
