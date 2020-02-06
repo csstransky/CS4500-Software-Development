@@ -1,0 +1,87 @@
++ Rear Admiral Grace Hopper wrote the first bug in a program (which was a literal bug: a moth)
++ Rover lander was on a boot loop on Mars, NASA had a backup of the Rover on Earth, and sent it to Mars
+
+Coding Style Guidelines
+- Google, CMU, NASA all have one (we also have one)
+- For example: staying away from deprecated functions in the language
+
+Print-line Debugging
+- My bread and butter
+- "Wolf Fence" algorithm for debugging
+    - Put up a wall, and hear which side the wolf howls
+    - Put up a wall new on that side and do it again
+    - A binary search for a wolf
+
+Interactive Debugging
++ GDB is considered the best for C debugging
++ LLDB is a descendant of GDB
++ Some have GUI front end
+
+C++ Static Analysis Tools
++ flawfinder
++ cppcheck
++ clang-tidy
++ G++ & Clang++ address-sanitizer
+
+Dynamic Analysis
++ Exposes bugs too subtle for static analysis to find
++ Execution of instrumented code
++ Actual running of actual program
++ Valgrind is an example
+
+Valgrind
++ Memory analyzer
++ DO NOT use with optimized builds
++ DO NOT user with -fsanitize=address
++ DrMemory is another example
+
+Heisenbug
++ A bug that changes or disappears when one attempts to probe or isolate it
++ Run several times: for i in {1..1000}; do ./a.out; done;
++ "Chaos mode" in rr: improve to, or an extension of GDB
+
+Time Traveling Debugger
++ Mario jumping
++ Can step forward in execution 
++ Support for this in VS code
+
+Other debugging methods
++ Correctness - Profiling (time, space, hot-spot)
++ Interactivity - Automated bug-fixing!!! (Research)
++ Test Suites - Fuzzing (will automatically introduce different data into your program (better testing))
+
+Formal methods
++ TLA+
++ Liquid Haskell
++ Verilog
++ HOL (Light)
+    - Pentium Bug: floating points were wrong, so multiplication was giving wrong answers
+    After, Intel put in a lot of effort to make sure that there is proper mathmatical testing
+
+Scylla and Charybdis in the Odyssey
++ Odysseus chose to lose 6 men to Scylla instead of the entire ship to Charybdis
+
+Glue code (like test code or adapters or makefile stuff) should also be written nicely too
++ Make test classes that set up strings and test cases for better optimization
+
+GDB commands
++ line 100
++ l - lists code where breakpoint is
++ explore internal
+
+LLDB commands
++ gui - can step through code and check variables (use tab to move windows)
++ b str_list.h:100 - sets break point
++ r - runs program
++ eval-exp
++ help watch - setting up watch point on known variable to find corrupted memory
+
+Flawfinder
++ Pretty good at finding errors (or bad style) for bad code
++ flawfinder *
+
+cppcheck
++ cppcheck --language=c++ string.h str_list.h test.cpp
++ checks style
+
+

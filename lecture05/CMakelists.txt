@@ -1,0 +1,8 @@
+# a lot of stuff here for googletest
+
+
+# Change last two lines
+add_executable(test-me test.cpp)
+target_link_libraries(test-me gtest)
+
+# Then type: "cmake ."

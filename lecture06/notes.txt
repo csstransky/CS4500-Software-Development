@@ -1,0 +1,73 @@
+cd gtest
+ls
+output: CMakeLists.txt  CMakeLists.txt.in   test.cpp
+
+cmake .
+
+# NOTE: Google tests do not need to be used for THIS assignment
+
+make
+
+./runTests
+
+Array benchmarks:
+1.982 seconds for primitve type
+74 seconds for boxed type
+- it's totally possible that this won't be representative of the final code (like a kernal)
+
+# Performance Part I
++ Jan chilling in Perdue with his colleague, and he wants him to work on a new language called "THORN"
++ how dynamic is dynamic? They did a study to see how much people really use dynamic types in JavaScript
+- used a way to check what objects that can have different shapes are used
+    - most cases would have the same case, but then the larger the optional object fields, the far less it's used
+
+Twitter - lifetime of objects
++ lots of adding and updating in the beginning, but then they die eventually
++ no deletions
+
+Google
++ Not that much creation, some updates, and lots of deleting when you're done
++ Stuff is used and killed very quickly with Google
+
+Sunspider - v8 <- benchmarks
++ Barely operates in a way that websites actually do
+
+Benchmarks
++ Easy to use, but doesn't really output what usually happens
+Websites
++ Actual thing, but happens so quick, it's not a good benchmark
+
+JSBench
++ Thing Janny boy made that records a webpage and then replays it in a benchmark mode
+
+FireFox versions
+SunSpider = super fast and it increases by 49x times
+JSBench = not that great, only a 4x time increase
+
+Microsoft, Mozilla try to get Jan, but then cancel when they find that JSBench doesn't flatter them
+Apple uses the benchmark to talk about how great their browser is over everyone else
+
+# Performance Part II
+
+Does the gcc "-O <1 2 3 ...>" flag actually optimize anything? Is it placebo?
++ It was found that trying to use certain flags like "3" would actually SLOWDOWN the software
+
+- For benchmarking, everything is different on different systems, you need to determine scope
++ Do you want to measure the difference in your versions of software?
++ Do you want to test different software on the same system?
+
+
+DaCapo is a Java benchmark
+- each time it runs, the benchmark will show multiple times for each execution it does
++ running a histogram will show a chart saying how many times (in a bar graph) a test landed at a time
+- FFT shows the sequence of measurements from different runs
+
+You have to design benchmarks that you think are reasonable.
+And you have to run benchmarks several times to get a good measurement.
+
+
+# First Code Review
+
++ In the README, put instructions on how to run the code, and what Python version you need to run it
++ Tests should happen quickly so you know what's wrong and what isn't
+

@@ -1,0 +1,9 @@
+
++ We have to read ALL instructor Piazza notes for assignments
++ Two teams need to be able to talk to one another (waterfall bad)
++ Think of tests and writing tests as use cases
+
+-- Assignment 3 Notes --
+
+Eden and friend:
++ Fix code so that there are no warnings

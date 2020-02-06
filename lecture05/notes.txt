@@ -1,0 +1,114 @@
+When you want to design a complex system
++ What are the main entities?
++ How do the patterns interact
++ What needs to be done?
++ Execute plan
+
+- Planning top-down: start with big system, then focus on details
+- Planning bottom-up: start on small blocks and build up
+
+- A customer has vague ideas what they want, but we need to translate that to actual specs
+    + A customer can want constant changes to the spec
+    + Think of this like building a house as an architect for a customer
+
+Design
++ Waterfall model
+    (In order from top to bottom)
+    - requirements analysis: asking what the customer wants
+    - software architecture: blueprint of the software
+    - component specification: spec of each of the pieces
+    - coding: each component will be implemented
+    - testing: test that code matches each specification
+    - integration testing: put all the components together to see if we have a working system
+    - deployment: getting the software to the customer and using it
+        + Deployment back then meant physically sending CDs to the customer with the software,
+        redepolyment was not easy
+    - maintenance: checking that nothing breaks from the developer
+
++ Agile
+    - test driven development (what's pushed in fundies 1 & 2)
+    - agilve development: you don't have rigid structure, teams are lighter
+        + Get SOMETHING to the customer, a rough prototype, don't focus on details
+    - XP (extreme programming): programming fast?
+    + Because deployment is easier, the psychology cost is less
+        - if the customer has to make light updates everyday, it's easier for them to do so
+
++ Our Process
+    - Figure out what you want
+        + What is your outside world? What will the program interact with?
+            - For example, a web broswer will have to interface with the internet
+    - Analyze Use Case: think about how the customer will use the software
+        + Try to think of as many useful and interesting ways a user will use the software
+    - Identify the software components & their interactions
+        + Generally, try to make your components small (more components is better)
+    - Plan for a stripped down prototype
+        + We need money to pay the bills now
+    - Iterate
+        + iterate designing and implementing until all the software is completed as required
+
+
+
+POS (Point of Sale) for a grocery store
+    - cash register
+    - inventory
+    - ordering, suppliers
+    - customer rewards
+    - scanning items
+    - UI: 1. cashier 2. accountant
+    - shelving and storage
+
+Environment
+    - money 
+    - customers 
+    - employees
+    - suppliers
+
+Use Cases
+    - customer wants to checkout
+    - returning an item
+    - food expiring or mech. stolen
+
+customer    ->  POS ->  credit card ->  bank
+                                    <-  ACKnowledgement
+                    ->  printer     -> receipt
+                    ->  inventory   -> order low supplies
+                    
+----====----====
+
+Data Adapter
+    - CLA (command lines arguments)
+    - schema
+    - files
+    - dataframe (big table with 4 columns)
+    
+Environment
+    - files
+    - queries
+
+Use cases
+    - file + query
+    - build a table with all the values
+    - speed & space are important
+
+Dataframe
+- Representing a column of Strings
+    Option 1:
+        List of Strings
+        - nullptr to decide if something is missing
+        - this'll get harder for a list of ints for example
+    Option 2:
+        List of objects
+        - downside is that objects are storing way more memory than just normal strings
+        - possible way of cache misdireciton because there's so much calling
+    Option 3:
+        List of Strings
+        List of Missing array (or an unsigned int saying what's missing)
+        - much less memory intensive
+
++ Args object gets all the arguments from the input (so much smarter)
+
++ Cmake will automatically make a test executable
++ include the stuff in (last 2 lines) in the CMakelists.txt
++ run with "cmake ."
++ run the new executable with ./test
+

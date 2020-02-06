@@ -1,0 +1,50 @@
+# Concurrency
+
++ We will be given a threading library to use threaded concurrent code
++ Now that Moore's Law is dead, software needs to bring performance boosts rather than the hardware
+
+Concurrency vs Parallelism:
++ Concurrency: we can have several different tasks running while overlapping each other
+    - OS tells 1 process to stop, and another to go; this is done with time-slicing
+    - This can be done on even a single core machine
++ Parallelism: Can be a single task or multiple tasks that are done on multiple cores
+
+Threads vs Processes
++ Process: Something created by the OS, and are *seperate* memory spaces
++ Threads: lightweight processes that happen within a *shared* memory space
+
++ C++ specifically gives portable abstraction for thread creation and management
+
++ "Atomic" - an operation happens no matter what, regardless of threads (most code is atomic)
++ Threads don't care about when they're launched, they'll happen when the CPU decides
++ When 2 threads are using the same variable, it's possible that both threads will use the same 
+value at the same time, but writing at different times, so a datafrace happens
+   - The counter example of counting to 1000000 for 2 threads, it reaches near 1mil rather than 2mil
+
++ A mutex - a mututable exclusion; lets the instrutions inside become atomic
+    counter_mut.lock();
+    counter++;
+    counter_mut.unlock();
++ This slows down the program by a good amount
+
+// An atomic value
+std::atomic<int> counter(0);
+
++ Program is quicker because of this, but must be loaded with counter.load()
+
+std::condition_variable_any cv;
+std:mutex cv_mtx;
+
+cv.wait(cv_mtx);
+cv_mtx.unlock();
+
++ mutexes protect a resource so that only 1 thread can grab it at a time
++ dead lock can happen when attempting to grab multiple resources with many threads
+    - 5 philosphers at a table, and 5 chopsticks, you need 2 to eat
+    - No one can make progress if everyone grabs the chopstick to their left
+
+# Code Review - byrcezhic
++ Maybe it's best to throw an error if there are arguments that are neccessary
++ REALLY should have an argument class for command line arguments
++ Becareful copying memory twice when not needed
++ Using regex is much smarter than using a giant switch case
