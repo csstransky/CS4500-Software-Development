@@ -1,0 +1,40 @@
+# Assignment 4 Questions
+
++ Rower, must be created with subclass, used as a interface
++ Row having index in function is really for convience
++ Object *should* have a clone function inside of it, so Rower will be cloned that way
++ Just make schema a string like "IFBII"
+
+# Networking API - Jan Code Review
+- socket options have a timeout option that are not set up
+- server will start and listen to 1024 characters or less on a socket
+- *bind()* socket to an address for the server
+
+What is the goal of a memo?
++ Help pick a solution
++ Get the reader to believe you
+
+What to avoid?
++ typos & bad grammar of course
++ gettng lost in a sea of prose
++ every sentence should have a meaning "this test is very good"
++ first person writing - "we" can be okay
++ humor
+
+Argumentation - what to avoid?
++ unsupported claims
++ non-sequiturs
++ irrelevant observations
+
+Description of the analysis
++ explain what you are measuring
++ explain how you measured it
+
+Comparison of relative performance
++ give and explain results (actual numbers)
+    - bar graphs should have numbers to them to know their actual values
++ Every graph explained in text
++ text can be read without looking at graphs
++ graphs can be understood without reading text
++ Use actualy numbers like "1.4 times faster", instead of "slightly faster"
+

@@ -1,0 +1,7 @@
++ I think today is just a day of code reviews
+
+For the wrapping array, you can use modulus instead of using an if statement and subtracting
+
++ It seems that good amount of code reviews can be pretty brutal. It helps to know your code in and
+out, but you really need to be able to tell a story with your code or people will stagnate on it
+
