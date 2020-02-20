@@ -1,0 +1,4 @@
++ When using stuff like Schema& as an input argument (in a constructor), you need to be very careful with it
+    - DO NOT just assign that pointer because it will be lost in the Stack, instead clone it, then
+    deconstruct it
++ Linked lists can be used to make sure there is NO copying at all
