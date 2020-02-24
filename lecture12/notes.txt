@@ -1,0 +1,11 @@
++ Java has a serialization function for every object
+    - Serializes each field at a time, checks versions too
+    - Also checks pointers as well, and serializes once for 2 things with 1 pointer
++ We can tell the object to work for us
+    - We can have the objects with serialize() functions
++ How do you know that a character array is really a seralized things?
+    - Including the class name in the beginning might help
++ When recording data, especially for averages, don't include every significant digit
++ When multithreading, if the number of work (rows) is lower than a certain amount,
+then just run the single threaded version
++ New and malloc will cause synchronization because the memory is a pool that the user can draw from
