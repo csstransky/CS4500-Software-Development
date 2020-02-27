@@ -1,0 +1,9 @@
++ Over 40 lines of code is too much for a function
++ The "-" in front of something in a Makefile executes the line ignoring errors
++ In the industry, 80 line width is considered the gold standard
++ Having bar graphs for discrete data is better than purely using lines
++ When running multi-threaded stuff, change your thread count based on the amount of work,
+like if you only have 
++ If you'd like to grab the number of threads your PC has:
+    include <unistd.d>
+    sysconf(_SC_NPROCESSORS_ONLN)
