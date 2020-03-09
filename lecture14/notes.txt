@@ -1,0 +1,16 @@
++ We *should* remove names from the DataFrame entirely
++ With global variables, see if you can add optional input arguments to change them
++ When you're quickly using variables in local scope, just do something like:
+    char reg_msg[BUFFER_SIZE];
+instead of:
+    char* reg_msg = new char[BUFFER_SIZE];
+    delete[] reg_msg;
++ use strncpy instead of strcpy, because strncpy uses an actual length to copy things
++ doubles quotes gives you a null terminator at the end ("/reg" is really "/reg\0")
++ be careful with strlen because you do have to sometimes add that +1 at the end
++ clients should have the option to kill themselves after a timeout to make sure you don't get 
+billed a large amount of money because of a client that isn't dead
++ be careful using String delimiters when you can instead use the length of the String to know where
+they end, or edit the String to get rid or change any characters that are delimiters inside of it
++ Sending things in the network happens in a STREAM, so you can sometimes get a chunked up serial
+message, which can cause problems
