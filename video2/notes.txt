@@ -1,0 +1,130 @@
+# An Exercise in Design
+
++ Writing test cases before writing code is always a good idea
++ For APIs, also smart to write use-cases first to understand how to make your code
++ When you write the use-cases first, you then write whatever functionality you will need
+based on how the use-case will operate (I kinda like doing it this way, makes more sense)
+
+Example:
+Use-case:
+void send(char* data, size_t length) { }
+void recv(char* data, size_t length) { }
+
+/** Use-case illustrating serialization of a message */
+void u1(Message* m) {
+    Serializer ser;
+    m.serialize(ser);
+    send(sef.data(), ser.length());
+}
+
+/** Use-case illustrating de-serialization of a message */
+Message* u2() { 
+    char* data = new char[1024];
+    size_t length = 0;
+    recv(data, &length);
+    Deserializer dser(data, length);
+    Message* m = Message::deserialize(dser);
+    return m;
+}
+
+void test() {
+    Message m = new Status(new String("SNAFU"));
+    u1(m);
+    Message m* = u2();
+    assert(m.equals(m2));
+}
+
+
+// message.h file
+class Message {
+    virtual void serialize(Serializer& ser) {
+        ser.write_size_t((size_t) kind_);
+        ser.write_size_t(sender_);
+        ser.write_size_t(target_);
+        ser.write_size_t(id_);
+    }
+
+    static Message* deserialize(Deserializer& dser) {
+        MsgKind kind = (MsgKind) dser.read_size_t();
+        switch(kind) {
+            case MsgKind::Ack:
+                return new Ack(dser);
+            case MsgKind::Status: 
+                return new Status(dser);
+        }
+    }
+
+    Message(Deserializer& d) {
+        kind_ = (MsgKind) d.read_size_t();
+        sender_ = d.read_size_t();
+        target_ = d.read_size_t();
+        id_ = d.read_size_t();
+    }
+}
+
+class Status : public Message {
+    String* msg;
+    Status(Deserializer& dser) : Message(d) {
+        msg = new String(dser);
+    }
+
+    void serialize(Serializer& ser) { 
+        Message::serialize(ser);
+        msg.serialize(ser);
+    }
+}
+
+// string.h file
+class String {
+    char* data_;
+    size_t length_;
+
+    String(Deserializer& d) {
+        length_ = d.read_size_t();
+        data_ = d.read_chars(length_);
+    }
+
+    void serialize(Serializer& ser) {
+        ser.write_size_t(length_);
+        ser.write_chars(data_, length_);
+    }
+}
+
+// serial.h file
+class Serializer {
+    char* data_ = new char[1024]; // data serialized so far
+    size_t length_ = 0; // number of chars in data_
+
+    void write_size_t(size_t v) { 
+        memcpy(data_ + length_, &v, sizeof(size_t));
+        length_ += sizeof(size_t);
+    }
+    void write_chars(char* v, size_t len) { 
+        memcpy(data_ + length_, v, len);
+        length_ += len;
+    }
+
+    char* data() { return data_; }
+
+    size_t length() { return length_; }
+}
+
+class Deserializer {
+    char* data_;
+    size_t length_;
+    Deserializer(char* data, size_t length) : data_(data), length_(length) { }
+
+    size_t read_size_t() {
+        size_t v;
+        memcpy(&v, data_ + length_, sizeof(size_t));
+        length += sizeof(size_t);
+        return v;
+    }
+
+    char* read_chars(size_t len) {
+        char* v;
+        memcpy(&v, data_ + length_, len);
+        length += len;
+        return v;
+    }
+}
