@@ -1,0 +1,5 @@
+# More code reviews
++ Recursive methods in C are not optimal because they continually add to the stack,
+meaning it's very possible to get a stackoverflow
++ Languages like Racket or Lisp can use recursion because they GUARENTEE that each method call will
+be tail recursive
